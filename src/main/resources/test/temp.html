@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>none</title>
+    <link rel="stylesheet" href="../static/css/layui.css" />
+    <script src="../static/layui.js"></script>
+  </head>
+
+  <body>
+    <script type="text/html" id="search_table_tools">
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="select">选择</a>
+    </script>
+    <script>
+      layui.use(["table", "jquery", "layer"], function() {
+        layui.layer.open({
+          type: 1,
+          skin: "layui-layer-rim",
+          area: ["800px", "600px"],
+          content:
+            '\
+            <fieldset class="layui-elem-field">\
+                <legend>选择成员</legend>\
+                <div class="layui-field-box">\
+                    <table lay-filter="search_user_list" id="search_user_list"></table>\
+                </div>\
+            </fieldset>'
+        });
+        layui.table.render({
+          elem: "#search_user_list",
+          data: search_user_list,
+          cols: [
+            [
+              { field: "name", title: "姓名", minWidth: 80, sort: false },
+              { field: "sno", title: "学号", minWidth: 120, sort: true },
+              { field: "grade", title: "年级", minWidth: 80, sort: true },
+              { field: "major", title: "专业", minWidth: 60, sort: true },
+              { field: "skill", title: "技能", minWidth: 100, sort: true },
+              { field: "sign", title: "签名", minWidth: 100, sort: true },
+              {
+                field: "operation",
+                title: "操作",
+                minWidth: 40,
+                sort: false,
+                toolbar: "#search_table_tools"
+              }
+            ]
+          ],
+          limit: 99,
+          skin: "row",
+          size: "sm",
+          even: true
+        });
+        layui.table.on("tool(search_user_list)", function(obj) {
+          var data = obj.data;
+          if (obj.event !== "select") {
+            return;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

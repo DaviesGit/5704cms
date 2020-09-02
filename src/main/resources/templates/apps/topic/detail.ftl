@@ -1,0 +1,260 @@
+<div class="main layui-clear">
+	<div class="wrap">
+	    <div class="content detail">
+	      <h1>${topic.title!''}</h1>
+	      <div class="fly-tip fly-detail-hint" data-id="{{rows.id}}">
+	        <#if topic.top>
+	        <span class="fly-tip-stick">置顶帖</span>
+	        </#if>
+	        <#if topic.essence>
+	        <span class="fly-tip-jing">精华帖</span>
+	        </#if>
+	        <#if !topic.finish>
+	        <span>未结贴</span>
+	        </#if>
+	        
+	        <#if topic.accept>
+	        <span class="fly-tip-jie">已采纳</span>
+	        </#if>
+	        
+	        <div class="fly-list-hint"> 
+	          <i class="iconfont" title="回答">&#xe60c;</i> ${topic.answers!0}
+	          <i class="iconfont" title="人气">&#xe60b;</i> ${topic.views!0}
+	        </div>
+	      </div>
+	      <div class="detail-about">
+	        <a class="jie-user" href="/user/index/${topic.creater!''}">
+	          <img src="/res/image/${topic.creater!''}" onerror="this.src='/images/user/default.png'" alt="">
+	          <cite>
+	          	<#if topicUser??>${topicUser.nickname!topicUser.name!topicUser.username!''}<#else>${topic.username!''}</#if>
+	            <em>发布时间：${topic.createtime?string('yyyy-MM-dd HH:mm:ss')}</em>
+	          </cite>
+	        </a>
+	        <div class="detail-hits" data-id="{{rows.id}}">
+	          <span style="color:#FF7200;">悬赏：${topic.price!0}</span>
+	          <span style="color:#0061ff;">分类：${topic.cate!''}</span>
+	          <#if user.id == topic.creater && topic.finish == false || user.usertype == "0">
+	          <span class="jie-admin" type="edit"><a href="/topic/edit/${topic.id!''}">编辑此贴</a></span>
+						<span class="jie-admin" style="padding-left:0px;">
+								<a href="javascript:void(0)" onclick="layer.confirm('结帖后不能取消结贴，请确认是否结贴？' , {icon: 3, title:'操作提示'},function(){location.href = '/topic/finish/${topic.id!''}'} ,  function(index){layer.close(index);});return false;">
+									<i class="layui-icon layui-icon-file-b"></i>
+									结贴
+								</a>
+						</span>
+	          </#if>
+	        </div>
+	      </div>
+	      
+	      <div class="detail-body photos" style="margin-bottom: 20px;">
+	        
+	        ${(topic.content!'')?no_esc}
+
+	      </div>
+	      
+	      <a name="comment"></a>
+	      <h2 class="page-title">回答<span>（<em id="jiedaCount">${topicCommentList.totalElements}</em>）</span></h2>
+	
+	      <ul class="jieda photos" id="jieda">
+	      	<#if topicCommentList??>
+	      	<#list topicCommentList.content as topicComment>
+	        <li data-id="${topicComment.id!''}" class="jieda-daan">
+	          <a name="${topicComment.id!''}"></a>
+	          <div class="detail-about detail-about-reply">
+	            <a class="jie-user" href="/user/index/${topicComment.creater!''}">
+	              <img src="/res/image/${topicComment.creater!''}" onerror="this.src='/images/user/default.png'" alt="">
+	              <cite>
+	                <i><#if topicComment.user??>${topicComment.user.nickname!topicComment.user.name!topicComment.user.username!''}<#else>${topicComment.username!''}</#if></i>
+	                <#if topicComment.creater == topic.creater><em>(楼主)</em></#if>
+	                <#if topicComment.admin?? && topicComment.admin == true><em style="color:#5FB878">(管理员)</em></#if>
+	              </cite>
+	            </a>
+	            <div class="detail-hits">
+	              <span>回复于 ${topicComment.updatetime?string('yyyy-MM-dd HH:mm:ss')}</span>
+	            </div>
+	            <#if topicComment.optimal>
+	            <i class="iconfont icon-caina" title="最佳答案"></i>
+	            </#if>
+	          </div>
+	          <div class="detail-body jieda-body">
+	            ${topicComment.content!''}
+	          </div>
+	          <div class="jieda-reply">
+	            <span class="jieda-zan zanok <#if topic.finish>finish</#if>" type="zan" id="up_${topicComment.id!''}" <#if topic.finish>title="已结贴"</#if>>
+	            	<#if topic.finish == false>
+	            		<#include "/apps/topic/up.ftl">
+	            	<#else>
+	            		<i class="iconfont icon-zan"></i><em>${topicComment.up!0}</em>
+	            	</#if>
+	            </span>
+	            <!-- <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span>  -->
+	            <#if user?? && ( (user.usertype?? && user.usertype == "0") || user.id == topic.creater ) && topic.finish == false>
+	            <div class="jieda-admin">
+	            	<#if user.usertype?? && user.usertype == "0">
+	              	<a href="/topic/rmcomment/${topic.id!''}/${topicComment.id!''}" onclick="layer.confirm('请确认是否删除评论？' , {icon: 3, title:'操作提示'},function(){location.href = '/topic/rmcomment/${topic.id!''}/${topicComment.id!''}'} ,  function(index){layer.close(index);});return false;"><span type="del">删除</span></a>
+	              	</#if>
+	              	<#if topicComment.optimal>
+		              	<a href="/topic/unoptimal/${topicComment.dataid!''}/${topicComment.id!''}">
+		              	<span class="jieda-accept" type="accept">取消采纳</span>
+		              	</a>
+	              	<#else>
+		              	<a href="/topic/optimal/${topicComment.dataid!''}/${topicComment.id!''}">
+		              	<span class="jieda-accept" type="accept">采纳</span>
+		              	</a>
+	              	</#if>
+	            </div>
+	            </#if>
+	          </div>
+	        </li>
+	        </#list>
+	        <#else>
+	        <li class="fly-none">没有任何回答</li>
+	        </#if>
+	        
+	      </ul>
+	      
+	      <div id="pages">
+	      
+	      </div>
+	      <div class="layui-form layui-form-pane">
+	      	<#if topic.finish == false>
+		      	<#if user??>
+		        <form method="post" action="/topic/comment/${topic.id!''}" method="post">
+		          <div class="layui-form-item layui-form-text">
+		            <div class="layui-input-block">
+		              <textarea id="content" name="content" required lay-verify="required" placeholder="我要回答"  class="layui-textarea fly-editor" style="height: 150px;"></textarea>
+		            </div>
+		          </div>
+		          <div class="layui-form-item">
+		            <input type="hidden" name="dataid" value="${topic.id!''}">
+		            <button class="layui-btn" lay-filter="*" lay-submit>提交回答</button>
+		          </div>
+		        </form>
+		        <#else>
+		        	<div style="text-align:center;margin-top:30px;">
+			        	<a href="/login" style="color: #32c24d;font-weight:bold;">登陆</a>
+			        	或
+			        	<a href="/login" style="color: #32c24d;font-weight:bold;">注册</a>
+			        	后提交回答
+		        	</div>
+		        </#if>
+	        <#else>
+	      		<div style="text-align:center;margin-top:30px;">
+			                              已结贴
+		        </div>
+	      	</#if>
+	      </div>
+	      
+	    </div>
+	  </div>
+	  <div class="edge">
+	  	<#if user?? && user.usertype?? && user.usertype == "0">
+	  	<h3 class="page-title">管理功能</h3>
+	    <ol class="manage-list">
+	      <li>
+	      	<span>
+	      		<#if topic.essence>
+	      			<a href="/topic/unessence/${topic.id!''}">
+		        		<i class="layui-icon">&#xe631;</i>
+		        		取消精华
+		        	</a>
+	        	<#else>
+		        	<a href="/topic/essence/${topic.id!''}">
+		        		<i class="layui-icon">&#xe631;</i>
+		        		精华
+		        	</a>
+	        	</#if>
+	        </span>
+	        <span>
+	        	<#if topic.top>
+	      			<a href="/topic/untop/${topic.id!''}">
+		        		<i class="layui-icon">&#xe631;</i>
+		        		取消置顶
+		        	</a>
+	        	<#else>
+		        	<a href="/topic/top/${topic.id!''}">
+		        		<i class="layui-icon">&#xe631;</i>
+		        		置顶
+		        	</a>
+	        	</#if>
+	        	
+	        </span>
+	        <span>
+	        	<a href="javascript:void(0)" style="color:red;" onclick="layer.confirm('请确认是否删除主题？' , {icon: 3, title:'操作提示'},function(){location.href = '/topic/delete/${topic.id!''}'} ,  function(index){layer.close(index);});return false;">
+	        		<i class="layui-icon">&#x1006;</i>
+	        		删除
+	        	</a>
+	        </span>
+	        <#if !topic.finish>
+		        <span>
+		        	<a href="/topic/finish/${topic.id!''}">
+		        		<i class="layui-icon layui-icon-file-b"></i>
+		        		结贴
+		        	</a>
+		        </span>
+		    <#else>
+		    	<span>
+		        	<a href="/topic/unfinish/${topic.id!''}">
+		        		<i class="layui-icon layui-icon-file-b"></i>
+		        		取消结贴
+		        	</a>
+		        </span>
+	        </#if>
+
+	      </li>
+	      
+	    </ol>
+	    </#if>
+	  	
+	    <h3 class="page-title">最近热帖</h3>
+	    <ol class="fly-list-one">
+	    	<#if relaAnswersList??>
+	    	<#list relaAnswersList.content as relaViewsTopic>
+		      <li>
+		        <a href="/topic/detail/${relaViewsTopic.id!''}">${relaViewsTopic.title!''}</a>
+		        
+		        <div class="f5704-ask-rela">
+		        	<span title="发表时间"><i class="iconfont">&#xe60b;</i> ${relaViewsTopic.updatetime?string('yyyy-MM-dd HH:mm:ss')}</span>
+		        	<span title="回复数"><i class="iconfont"></i> ${relaViewsTopic.answers!0}</span>
+		        	<span title="关注数"><i class="iconfont">&#xe60b;</i> ${relaViewsTopic.views!0}</span>
+		        </div>
+		      </li>
+		    </#list>
+		    </#if>
+	    </ol>
+	    
+	    <h3 class="page-title">近期热议</h3>
+	    <ol class="fly-list-one">
+	    	<#if relaViewsList??>
+	    	<#list relaViewsList.content as relaAnswerTopic>
+		      <li>
+		        <a href="/topic/detail/${relaAnswerTopic.id!''}">${relaAnswerTopic.title!''}</a>
+		        
+		        <div class="f5704-ask-rela">
+		        	<span title="发表时间"><i class="iconfont">&#xe60b;</i> ${relaAnswerTopic.updatetime?string('yyyy-MM-dd HH:mm:ss')}</span>
+		        	<span title="回复数"><i class="iconfont"></i> ${relaAnswerTopic.answers!0}</span>
+		        	<span title="关注数"><i class="iconfont">&#xe60b;</i> ${relaAnswerTopic.views!0}</span>
+		        </div>
+		      </li>
+		    </#list>
+		    </#if>
+	    </ol>
+	    
+	  </div>
+  </div>
+
+<script>
+	layui.use(['laypage', 'layer'], function(){
+	  layui.laypage.render({
+			elem: 'pages',
+			count: <#if topicCommentList??>${topicCommentList.totalElements}<#else>0</#if>,
+			limit: <#if topicCommentList??>${topicCommentList.size}<#else>0</#if>,
+			curr: <#if topicCommentList??>${topicCommentList.number+1}<#else>0</#if>,
+			layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
+			jump:function(data , first){
+				if(!first){
+					location.href = location.protocol + '//' + location.host + location.pathname+'?p='+data.curr+'&ps='+data.limit;
+				}
+			}
+	   });
+	});
+</script>

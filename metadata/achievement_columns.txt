@@ -1,0 +1,26 @@
+id				ID
+name			成果名称
+type			成果类型
+number			成果编号
+progress        成果进度
+apply_time      申请时间
+accept_time     受理时间
+authorize_time  授权时间
+description		描述
+remark			备注
+
+
+users			成员
+projects		关联项目
+
+
+
+
+id				ID
+name			成果名称
+type			成果类型
+number			成果编号
+progress        成果进度
+apply_time      申请时间
+accept_time     受理时间
+authorize_time  授权时间

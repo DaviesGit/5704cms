@@ -1,0 +1,100 @@
+id					ID
+sessionid			sessionid（临时）
+username			用户名
+password			密码
+secureconf			安全配置
+usertype			用户类型
+creater				创建者
+createtime			创建时间
+passupdatetime		密码更新时间
+updatetime			更新时间
+lastlogintime		最后一次登录时间
+login				登录状态
+fans				粉丝数量
+follows				关注数量
+integral			积分
+rowcount			行计数（临时）
+agent				代理（临时）
+key					key（临时）
+orgi				orgi
+status				状态
+deactivetime		停用时间
+rank				成员等级
+					
+nickname			昵称
+firstname			firstname
+midname				midname
+lastname			lastname
+					
+language			语言
+jobtitle			工作名称
+title				头衔
+					
+birthday			生日
+department			部门
+gender				性别
+					
+name				姓名
+email				邮箱
+mobile				电话
+phone				身份证
+parent_phone		父母联系方式
+organ				组织
+skill				技能
+city				城市
+province			省份
+sno					学号
+grade				年级
+major				专业
+room_id				寝室号
+join_time			加入时间
+					
+sign				签名
+description			描述
+remark				备注
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+filter: 
+
+id					ID
+username			用户名
+usertype			用户类型
+lastlogintime		最后一次登录时间
+rank				成员等级
+nickname			昵称
+firstname			firstname
+midname				midname
+lastname			lastname
+language			语言
+jobtitle			工作名称
+title				头衔
+birthday			生日
+department			部门
+gender				性别
+name				姓名
+email				邮箱
+mobile				电话
+phone				身份证
+parent_phone		父母联系方式
+organ				组织
+skill				技能
+city				城市
+province			省份
+sno					学号
+grade				年级
+major				专业
+room_id				寝室号
+join_time			加入时间
+search				模糊搜索

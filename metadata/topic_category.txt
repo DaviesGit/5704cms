@@ -1,0 +1,7 @@
+消息发布		info
+活动			activity
+在校			not_graduated
+毕业			graduated
+精贴			essence
+我的贴		    my
+全部			all
